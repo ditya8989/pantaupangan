@@ -1,0 +1,466 @@
+@import "tailwindcss";
+
+/* ───────────────────────── Token warna ───────────────────────── */
+
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-up: var(--up);
+  --color-up-soft: var(--up-soft);
+  --color-down: var(--down);
+  --color-down-soft: var(--down-soft);
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+:root {
+  color-scheme: light;
+  --page: #fbf8f1;
+  --surface: #ffffff;
+  --surface-2: #f4efe4;
+  --fg: #1c1917;
+  --fg-2: #57534e;
+  --muted: #6f675f;
+  --line: rgb(28 25 23 / 0.09);
+  /* Terakota "pasar": aksen merek. */
+  --accent: #c2410c;
+  --accent-strong: #ea580c;
+  --accent-soft: #ffedd5;
+  /* Harga naik = buruk bagi konsumen (merah); turun = baik (hijau). Selalu disertai ikon + tanda. */
+  --up: #b42318;
+  --up-soft: #fde8e6;
+  --down: #047857;
+  --down-soft: #d9f6e8;
+  --glow-1: #fed7aa;
+  --glow-2: #fde68a;
+  --glow-3: #d9f99d;
+  --pattern: rgb(194 65 12 / 0.09);
+  --shadow-card: 0 1px 2px rgb(28 25 23 / 0.04), 0 8px 24px -12px rgb(28 25 23 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(28 25 23 / 0.05), 0 18px 40px -16px rgb(194 65 12 / 0.28);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --page: #110f0d;
+    --surface: #1b1815;
+    --surface-2: #27231f;
+    --fg: #faf7f2;
+    --fg-2: #d6d0c8;
+    --muted: #a39b91;
+    --line: rgb(255 255 255 / 0.09);
+    --accent: #fb923c;
+    --accent-strong: #f97316;
+    --accent-soft: #3b2412;
+    --up: #ff8f80;
+    --up-soft: #3d1a16;
+    --down: #4ade80;
+    --down-soft: #12301c;
+    --glow-1: rgb(234 88 12 / 0.28);
+    --glow-2: rgb(217 119 6 / 0.22);
+    --glow-3: rgb(101 163 13 / 0.16);
+    --pattern: rgb(251 146 60 / 0.07);
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.5);
+    --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.3), 0 18px 40px -16px rgb(249 115 22 / 0.3);
+  }
+}
+
+body {
+  background: var(--page);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.recharts-wrapper:focus,
+.recharts-surface:focus {
+  outline: none;
+}
+
+/* ───────────────────────── Dekorasi ───────────────────────── */
+
+/* Motif batik kawung yang sangat halus; warnanya ikut tema lewat --pattern. */
+.kawung {
+  position: relative;
+  isolation: isolate;
+}
+.kawung::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--pattern);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='black' stroke-width='1.3'%3E%3Cellipse cx='24' cy='12' rx='6' ry='10.5'/%3E%3Cellipse cx='24' cy='36' rx='6' ry='10.5'/%3E%3Cellipse cx='12' cy='24' rx='10.5' ry='6'/%3E%3Cellipse cx='36' cy='24' rx='10.5' ry='6'/%3E%3Ccircle cx='24' cy='24' r='1.6'/%3E%3Ccircle cx='0' cy='0' r='1.6'/%3E%3Ccircle cx='48' cy='0' r='1.6'/%3E%3Ccircle cx='0' cy='48' r='1.6'/%3E%3Ccircle cx='48' cy='48' r='1.6'/%3E%3C/g%3E%3C/svg%3E")
+    0 0 / 48px 48px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='black' stroke-width='1.3'%3E%3Cellipse cx='24' cy='12' rx='6' ry='10.5'/%3E%3Cellipse cx='24' cy='36' rx='6' ry='10.5'/%3E%3Cellipse cx='12' cy='24' rx='10.5' ry='6'/%3E%3Cellipse cx='36' cy='24' rx='10.5' ry='6'/%3E%3Ccircle cx='24' cy='24' r='1.6'/%3E%3Ccircle cx='0' cy='0' r='1.6'/%3E%3Ccircle cx='48' cy='0' r='1.6'/%3E%3Ccircle cx='0' cy='48' r='1.6'/%3E%3Ccircle cx='48' cy='48' r='1.6'/%3E%3C/g%3E%3C/svg%3E")
+    0 0 / 48px 48px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+}
+
+/* ───────────────────────── Animasi ───────────────────────── */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(calc(var(--rot, 0deg) + 6deg));
+  }
+}
+@keyframes blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(24px, -16px) scale(1.08);
+  }
+  66% {
+    transform: translate(-18px, 12px) scale(0.95);
+  }
+}
+@keyframes draw {
+  from {
+    stroke-dashoffset: var(--len);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.25);
+  }
+}
+@keyframes ping-out {
+  from {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.8);
+  }
+}
+@keyframes odo-roll {
+  from {
+    transform: translateY(0);
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes ring {
+  0%,
+  55%,
+  100% {
+    transform: rotate(0);
+  }
+  10%,
+  30% {
+    transform: rotate(14deg);
+  }
+  20%,
+  40% {
+    transform: rotate(-12deg);
+  }
+}
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0) scale(1.08);
+  }
+  30% {
+    transform: rotate(-9deg) scale(1.08);
+  }
+  70% {
+    transform: rotate(9deg) scale(1.08);
+  }
+}
+
+/* Muncul dari bawah, bertahap per elemen (--i = urutan). */
+.anim-rise {
+  animation: rise 0.7s cubic-bezier(0.2, 0.75, 0.25, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+.anim-fade {
+  animation: fade-in 0.8s ease-out both;
+  animation-delay: var(--delay, 0s);
+}
+.anim-float {
+  animation: float var(--dur, 6s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+.anim-blob {
+  animation: blob var(--dur, 18s) ease-in-out infinite;
+}
+.anim-pop {
+  animation: pop 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+  animation-delay: var(--delay, 0.15s);
+}
+.anim-ring {
+  transform-origin: 50% 10%;
+  animation: ring 2.6s ease-in-out 0.8s infinite;
+}
+.anim-grow {
+  transform-origin: left center;
+  animation: grow-x 0.9s cubic-bezier(0.2, 0.75, 0.25, 1) both;
+  animation-delay: calc(0.15s + var(--i, 0) * 80ms);
+}
+.group:hover .hover-wiggle {
+  animation: wiggle 0.6s ease-in-out;
+}
+
+/* Sparkline: garis tergambar, area memudar masuk, titik terakhir "pop" lalu berdenyut. */
+.spark-line {
+  stroke-dasharray: var(--len);
+  animation: draw 1.4s cubic-bezier(0.45, 0, 0.2, 1) both;
+  animation-delay: calc(0.25s + var(--i, 0) * 70ms);
+}
+.spark-area {
+  animation: fade-in 1s ease-out both;
+  animation-delay: calc(0.9s + var(--i, 0) * 70ms);
+}
+.spark-dot,
+.spark-ping {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.spark-dot {
+  animation: pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+  animation-delay: calc(1.5s + var(--i, 0) * 70ms);
+}
+.spark-ping {
+  opacity: 0;
+  animation: ping-out 1.6s cubic-bezier(0, 0, 0.2, 1) 2;
+  animation-delay: calc(1.8s + var(--i, 0) * 70ms);
+}
+
+/* Garis yang "tergambar" sekali (path dengan pathLength="100"): coretan judul, logo. */
+.draw-in {
+  --len: 100;
+  stroke-dasharray: 100;
+  animation: draw 1.1s cubic-bezier(0.45, 0, 0.2, 1) both;
+  animation-delay: var(--delay, 0.4s);
+}
+
+/* Odometer: tiap digit adalah pita 0–9 yang berputar ke angka akhirnya. */
+.odometer {
+  display: inline-flex;
+  align-items: flex-start;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.odometer > span {
+  display: inline-block;
+  height: 1.1em;
+}
+.odo-digit {
+  overflow: hidden;
+}
+.odo-strip {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(calc(var(--d) * -1.1em));
+  animation: odo-roll 1.4s cubic-bezier(0.15, 0.85, 0.25, 1) both;
+  animation-delay: calc(0.1s + var(--i, 0) * 55ms);
+}
+.odo-strip > span {
+  height: 1.1em;
+  line-height: 1.1;
+}
+
+/* Ticker pergerakan harga. */
+.marquee {
+  overflow: hidden;
+  /* Wajib: saat "kurangi gerakan" aktif, ticker jadi bisa digeser (overflow-x: auto) dan tanpa
+     `contain: paint` isinya (±3.800px) ikut melebarkan halaman di HP sehingga tampilan diperkecil. */
+  contain: paint;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 55s) linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track,
+.marquee[data-paused="true"] .marquee-track {
+  animation-play-state: paused;
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 25%,
+    color-mix(in oklab, var(--surface-2) 45%, var(--surface)) 50%,
+    var(--surface-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+/* Muncul saat di-scroll (progressive enhancement, tanpa JavaScript). */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 55%;
+  }
+  /* Batang peringkat tumbuh saat terlihat di layar. */
+  .reveal .anim-grow {
+    animation: grow-x linear both;
+    animation-timeline: view();
+    animation-range: entry 30% cover 40%;
+    animation-delay: 0s;
+  }
+}
+
+/* ───────────────────────── View Transitions ───────────────────────── */
+
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+/* Ilustrasi komoditas "terbang" dari kartu ke hero halaman detail. */
+::view-transition-group(.morph) {
+  animation-duration: 450ms;
+  animation-timing-function: cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: via-blur;
+}
+@keyframes via-blur {
+  30% {
+    filter: blur(2px);
+  }
+}
+
+@keyframes vt-fade {
+  from {
+    filter: blur(3px);
+    opacity: 0;
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+@keyframes vt-slide {
+  from {
+    translate: var(--slide-offset);
+  }
+  to {
+    translate: 0;
+  }
+}
+::view-transition-old(.nav-forward) {
+  --slide-offset: -60px;
+  animation:
+    150ms ease-in both vt-fade reverse,
+    400ms ease-in-out both vt-slide reverse;
+}
+::view-transition-new(.nav-forward) {
+  --slide-offset: 60px;
+  animation:
+    210ms ease-out 150ms both vt-fade,
+    400ms ease-in-out both vt-slide;
+}
+::view-transition-old(.nav-back) {
+  --slide-offset: 60px;
+  animation:
+    150ms ease-in both vt-fade reverse,
+    400ms ease-in-out both vt-slide reverse;
+}
+::view-transition-new(.nav-back) {
+  --slide-offset: -60px;
+  animation:
+    210ms ease-out 150ms both vt-fade,
+    400ms ease-in-out both vt-slide;
+}
+
+/* ───────────────────────── Kurangi gerakan ───────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+  .marquee {
+    overflow-x: auto;
+  }
+  .marquee-duplicate {
+    display: none;
+  }
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
